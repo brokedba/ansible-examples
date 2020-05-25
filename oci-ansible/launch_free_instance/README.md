@@ -7,6 +7,7 @@ The sample
 - specifies the public key from that key-pair to connect to the instance during instance launch and 
 - demonstrates how the newly launched instance can be connected to using SSH.
 - config_profile_name: "{{config_profile}}" has been added so you use a specific profile listed in your oci config file(~.oci/config.cfg)
+- check_network and check_shapes are quick playbooks(get facts) to run in case you would like to validate the corectness of your setup. 
 
 # Instructions
 
