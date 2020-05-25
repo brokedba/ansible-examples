@@ -6,6 +6,7 @@ The sample
 - generates a temporary host-specific SSH key-pair
 - specifies the public key from that key-pair to connect to the instance during instance launch and 
 - demonstrates how the newly launched instance can be connected to using SSH.
+- config_profile_name: "{{config_profile}}" has been added so you use a specific profile listed in your oci config file(~.oci/config.cfg)
 
 # Instructions
 
