@@ -1,3 +1,2 @@
-#export SAMPLE_COMPARTMENT_OCID="ocid1.tenancy. "
 #export SAMPLE_IMAGE_OCID="ocid1.image.oc1.ca-toronto-1. "
 export SAMPLE_COMPARTMENT_OCID="ocid1.tenancy.oc1.. "
