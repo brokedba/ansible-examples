@@ -3,7 +3,7 @@
   hosts: localhost
   vars:
     # profile
-    config_profile: "NKOTB"
+    config_profile: "DEFAULT"
     # common networking definitions
     quad_zero_route: "0.0.0.0/0"
     TCP_protocol: "6"
