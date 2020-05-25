@@ -1,0 +1,64 @@
+---
+
+- hosts: localhost
+  vars:
+    compartment_id: "{{ lookup('env', 'SAMPLE_COMPARTMENT_OCID') }}"
+    instance_shape: "VM.Standard.E2.1.Micro"
+    quad_zero_route: "0.0.0.0/0"
+    TCP_protocol: "6"
+    SSH_port: "22"
+    HTML_port: "80"
+  gather_facts: no
+  roles:
+    - oracle.oci_ansible_modules
+  tasks:
+    - name: Create a temporary directory to house a temporary SSH keypair we will later use to connect to instance
+      tempfile:
+        state: directory
+        suffix: cert
+        prefix: rsa
+      register: result
+    - set_fact:
+        temp_certificates_path: "{{ result.path }}"  
+    - name: print path
+      debug: 
+        msg: "the new directory is {{ result.path }}" 
+    - name: Generate a Private Key
+      openssl_privatekey:
+        path: "{{ temp_certificates_path }}/id_rsa.pem"
+        type: RSA
+        size: 2048
+    - set_fact:
+        my_test_public_key: "{{ temp_certificates_path }}/id_rsa_pub.pem"
+    - name: Generate a Public Key
+      openssl_publickey:
+        path: "{{ my_test_public_key }}"
+        privatekey_path: "{{ temp_certificates_path }}/id_rsa.pem"
+        format: OpenSSH
+    - name:
+      debug:
+        msg: 
+        - "the private key is  {{ temp_certificates_path }}/id_rsa.pem"
+        - "the public key is  {{my_test_public_key}}"
+    # Create a security list for allowing access to public instance
+    # Use a jinja2 template of the ingress and egress security rules to generate
+    # a templated version of the final rules.
+    - name: create ingress rules yaml body
+      template: src=./templates/ingress_security_rules.yaml.j2 dest=/tmp/instance_ingress_security_rules.yaml
+    - name: create egress yaml body
+      template: src=./templates/egress_security_rules.yaml.j2 dest=/tmp/instance_egress_security_rules.yaml
+    # Load the variables defined in the generated files
+    - name: load the variables defined in the ingress rules yaml body
+      include_vars:
+        file: /tmp/instance_ingress_security_rules.yaml
+        name: loaded_ingress
+    - name: print loaded_ingress
+      debug:
+        msg: "loaded ingress is {{loaded_ingress | to_nice_yaml }}"
+    - name: load the variables defined in the egress rules yaml body
+      include_vars:
+        file: /tmp/instance_egress_security_rules.yaml
+        name: loaded_egress
+    - name: print loaded_egress
+      debug:
+        msg: "loaded egress is {{loaded_egress}}"

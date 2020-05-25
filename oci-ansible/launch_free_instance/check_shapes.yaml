@@ -1,0 +1,65 @@
+
+---
+
+- hosts: localhost
+  vars:
+    compartment_id: "{{ lookup('env', 'SAMPLE_COMPARTMENT_OCID') }}"
+    instance_shape: "VM.Standard.E2.1.Micro"
+    quad_zero_route: "0.0.0.0/0"
+    TCP_protocol: "6"
+    SSH_port: "22"
+  gather_facts: no
+  roles:
+    - oracle.oci_ansible_modules
+  tasks:
+    - name: Check pre-requisites
+      fail:
+        msg: "Environment variable {{item}} not set. Please declare an environment variable with an appropriate value for the sample to work."
+      when: item not in ansible_env
+      with_items:
+        - "SAMPLE_COMPARTMENT_OCID"
+        - "SAMPLE_IMAGE_OCID"
+    - name: Get the availability domain
+      oci_ad_facts:
+        compartment_id: "{{compartment_id}}"
+        #region: "CA-TORONTO-1"        
+      register: ad
+    - set_fact:
+        availability_domains: "{{ ad.availability_domains }}"
+    - name : Print the OCID of the AD
+      debug:
+        msg: 
+        - "the OCID of the availability Domain is {{ availability_domains[0].id }}" 
+        - "the Name of the availability Domain is {{ availability_domains[0].name }}" 
+    - name: List images
+      oci_image_facts:
+        compartment_id: "{{compartment_id}}"     
+        shape: "{{instance_shape}}"
+        operating_system_version: '7'
+        operating_system: "CentOS"
+      register: result
+    - set_fact:
+        img: "{{ result }}"
+    - name: Print the OCID of the selected image
+      debug:
+        msg: # Default order for TIMECREATED is descending.
+        - "the name of the image is {{ img.images[0].display_name }}"      
+        - "the OCID of the image is {{ img.images[0].id }}"
+        #var: img.images[0].display_name
+        #var: img.images[0].id
+    # setup sample
+    - name: List shapes in first AD
+      oci_shape_facts:
+        compartment_id: "{{compartment_id}}"  
+        image_id:  "{{ img.images[0].id }}" 
+        availability_domain: "{{ availability_domains[0].name }}"
+      register: result
+      when: availability_domains | length > 0
+    - debug:
+        var: "{{result.shapes.shapes[0].shape}}" 
+    - set_fact:
+        instance_ad: "{{ ad.availability_domains[0].name }}"   
+      loop: "{{ result.shapes.shapes }}"
+      when: item.shape ==  "{{instance_shape}}" and availability_domains | length > 0  
+
+
