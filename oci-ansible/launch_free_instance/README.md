@@ -24,3 +24,9 @@ PATH : ~/.ansible/roles/oracle.oci_ansible_modules
 
 To run the sample, after ensuring that you have the pre-requisites for OCI ansible cloud modules, please provide values (that are specific to your tenancy) for the following variables in the file `a_env_vars` and source it:
 - SAMPLE_COMPARTMENT_OCID
+
+
+Once all set you can just call the samle playbook
+```
+# anisble-playbook sample.yaml
+```
