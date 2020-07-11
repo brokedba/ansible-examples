@@ -13,14 +13,15 @@ The sample
 
 This can only work if you install oci-ansible  modules from ansible-galaxy as I adapted the playbook to use roles instead of the original module calls available in the oracle official GitHub Repo.
 
-``
+`
 -------- automatic galaxy install -------------------------------------
 The default path for the roles is the first writable directory configured via DEFAULT_ROLES_PATH: ~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles
 $ ansible-galaxy install --roles-path=/etc/ansible/roles   (or -p)
 $ ansible-galaxy list
 - oracle.oci_ansible_modules, v1.18.0
 PATH : ~/.ansible/roles/oracle.oci_ansible_modules
-``
+
+`
 
 To run the sample, after ensuring that you have the pre-requisites for OCI ansible cloud modules, please provide values (that are specific to your tenancy) for the following variables in the file `a_env_vars` and source it:
 - SAMPLE_COMPARTMENT_OCID
