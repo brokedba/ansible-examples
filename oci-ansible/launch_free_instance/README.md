@@ -28,5 +28,5 @@ To run the sample, after ensuring that you have the pre-requisites for OCI ansib
 
 Once all set you can just call the samle playbook
 ```
-# anisble-playbook sample.yaml
+# ansible-playbook sample.yaml
 ```
