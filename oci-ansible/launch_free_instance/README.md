@@ -26,7 +26,7 @@ To run the sample, after ensuring that you have the pre-requisites for OCI ansib
 - SAMPLE_COMPARTMENT_OCID
 
 
-Once all set you can just call the samle playbook
+Once all set you can just call the sample playbook
 ```
 # ansible-playbook sample.yaml
 ```
