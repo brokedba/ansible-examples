@@ -1,6 +1,7 @@
 # Overview
 
 This sample shows how an [Always Free](https://www.oracle.com/cloud/free/) public compute instance can be [launched](https://docs.us-phoenix-1.oraclecloud.com/Content/Compute/Tasks/launchinginstance.htm) and accessed through SSH, using OCI ansible cloud modules.
+- More detail in my [blog post](https://brokedba.blogspot.com/2020/07/launch-oci-instance-with-ansible-in-10.html).
 ![Topology](https://brokedba.files.wordpress.com/2020/08/image-4.png?w=853)
 The sample 
 - generates a temporary host-specific SSH key-pair
@@ -32,4 +33,4 @@ Once all set you can just call the sample playbook
 ```
 
 
-More detail in my [blog post](https://brokedba.blogspot.com/2020/07/launch-oci-instance-with-ansible-in-10.html).
+
